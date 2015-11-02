@@ -14,20 +14,20 @@ do
     case $option in
 	p)
 	    port=$OPTARG;
-	    echo $port;
+	    echo "port : " $port;
 	    ;;
 	d)
-	    cheminRacine=$OPTARG;
-	    echo $cheminRacine;
+	    export cheminRacine=$OPTARG;
+	    echo "chemin Racine : " $cheminRacine;
 	    ;;
 	t)
-	    cheminModel=$OPTARG;
-	    echo $cheminModel;
+	    export cheminModel=$OPTARG;
+	    echo "chemin Model : " $cheminModel;
 	    ;;
     esac
 done
 
 while true
 do
-    cat $tube | ./http-request.sh -d $cheminRacine -t $cheminModel  | nc -l -p $port > $tube
+    cat $tube | ./http-request.sh | nc -l -p $port > $tube
 done

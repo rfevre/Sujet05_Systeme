@@ -1,20 +1,5 @@
 #!/bin/bash
 
-#On enregistre dans les variables correspondante les options
-while getopts d:t: option
-do
-    case $option in
-	d)
-	    cheminRacine=$OPTARG;
-	    #echo $cheminRacine;
-	    ;;
-	t)
-	    cheminModel=$OPTARG;
-	    #echo $cheminModel;
-	    ;;
-    esac
-done
-
 function notAllowed() {
     echo "HTTP/1.1 405 \"Method not allowed\"";
     #En-tete de reponse :
