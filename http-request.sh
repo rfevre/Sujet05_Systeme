@@ -74,9 +74,29 @@ function html() {
 	#Si il est au format CSV
 	if [ $(echo -e "$tmp" | tail -c5) == ".csv" ]
 	then
-	    itsOk "$tmp";
-	    cat "$tmp" | ./csv2html.sh > "$(echo "$url" | cut -d'/' -f3 | cut -d'.' -f1).html";
-	    echo -e "\r\n";
+	    #Si il y a un trie
+	    if [ $(echo "$url" | cut -d'/' -f4) == "triepar" 2>/dev/null ]
+	    then
+		#Trie par numero
+		if [ -z $(echo "$url" | cut -d'/' -f5 | sed s/[0-9]*//) ]
+		then
+		    numero=$(echo "$url" | cut -d'/' -f5);
+		    itsOk "$tmp";
+		    cat "$tmp" | ./csv2html.sh -s$numero > "$(echo "$url" | cut -d'/' -f3 | cut -d'.' -f1).html";
+		    echo -e "\r\n";
+		#Trie par nom
+	        else
+		    nom=$(echo "$url" | cut -d'/' -f5);
+		    itsOk "$tmp";
+		    cat "$tmp" | ./csv2html.sh -S$nom > "$(echo "$url" | cut -d'/' -f3 | cut -d'.' -f1).html";
+		    echo -e "\r\n";
+		fi
+            #Aucun trie
+	    else
+		itsOk "$tmp";
+		cat "$tmp" | ./csv2html.sh > "$(echo "$url" | cut -d'/' -f3 | cut -d'.' -f1).html";
+		echo -e "\r\n";
+	    fi
 	    
         #Si il est au format txt
 	elif [ "$(file -b -i "$tmp" | cut -d';' -f1)" == "text/plain" ]
